@@ -1,14 +1,14 @@
-amzn.client.id: amzn1.application-oa2-client.6d0f4ce2a6ab476b8247e6d293240a5f
-amzn.client.secret: 3de02217d36a56763d31b381593b58cf854d2588573c39ad00fc330815db36d2
+amzn.client.id: amzn1.application-oa2-client.39a006eb2e16495889bb10a9fe78edcf
+amzn.client.secret: 9ca2a8b88b9e80f97d9b3deb9e96b268efc39d96458bbe60f7912b8d3a20eb37
 amzn.auth.scope:  profile postal_code
 amzn.accessTokenUri: https://api.amazon.com/auth/o2/token
 amzn.userAuthorizationUri: https://www.amazon.com/ap/oa
 amzn.authorization.code: authorization_code
 
 config.oauth2.resourceURI: https://api.amazon.com/user/profile
-amzn.preestablished.redirect.url: https://192.168.178.62:8080/auth
-
 
 security.basic.enabled: false
 
-jwt.secret: secretsecret
+jwt:
+  secret: secretsecret
+  header: X-AUTH-TOKEN

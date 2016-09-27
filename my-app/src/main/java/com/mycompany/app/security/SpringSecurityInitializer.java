@@ -2,12 +2,9 @@ package com.mycompany.app.security;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.ImportResource;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
 
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
 
 /**
  * @author Oleksandra Sydorenko

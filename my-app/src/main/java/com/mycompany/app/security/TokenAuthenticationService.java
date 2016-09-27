@@ -1,11 +1,13 @@
 package com.mycompany.app.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 
 /**
@@ -15,19 +17,18 @@ import javax.servlet.http.HttpServletRequest;
 @Service
 public class TokenAuthenticationService {
 
-    private static final String AUTH_HEADER_NAME = "X-AUTH-TOKEN";
+    @Value("${jwt.header}")
+    private String jwtHeader;
 
     @Autowired
     private JWTTokenHelper jwtTokenHelper;
 
-
     public ResponseEntity addAuthentication(String userId) {
-        return ResponseEntity.ok().header("AUTH_HEADER_NAME",jwtTokenHelper.generateToken(userId)).build();
-
+        return ResponseEntity.ok().header(jwtHeader, jwtTokenHelper.generateToken(userId)).build();
     }
 
     public Authentication getAuthentication(HttpServletRequest request) {
-        final String token = request.getHeader(AUTH_HEADER_NAME);
+        final String token = request.getHeader(jwtHeader);
         if (token != null) {
             String userId = jwtTokenHelper.parseUserFromToken(token);
             if (userId != null) {

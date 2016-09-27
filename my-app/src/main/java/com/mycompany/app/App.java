@@ -106,7 +106,7 @@ public class App extends WebMvcConfigurerAdapter
 
         // curl -u user:password -k https://127.0.0.1:9000/greeting
 
-        final String keystoreFile = "/home/alex/Dropbox/Work/TestPrj/keystore.p12";
+        final String keystoreFile = "D:/Programming/JAVA_PRJ/TestRCAuth/RCAuth/keystore.p12";
         final String keystorePass = "reviewtest";
         final String keystoreType = "PKCS12";
         final String keystoreProvider = "SunJSSE";

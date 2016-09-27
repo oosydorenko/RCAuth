@@ -12,6 +12,9 @@ import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 
 /**
  * @author Oleksandra Sydorenko
@@ -29,23 +32,20 @@ class LoginController {
     @Value("${config.oauth2.resourceURI}")
     private String resourceURI;
 
+    @Value("${jwt.header}")
+    private String jwtHeader;
+
     @RequestMapping("/auth")
-    public ResponseEntity home() {
+    public ResponseEntity home(HttpServletRequest rq, HttpServletResponse rsp) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        JsonNode node = null;
+        ResponseEntity responseEntity;
         if (auth == null) {
-            node = restTemplate.getForObject(resourceURI, JsonNode.class);
-            SecurityContextHolder.getContext().setAuthentication(new AuthUser(node.get("user_id").asText()));
-            return tokenAuthenticationService.addAuthentication(node.get("user_id").asText());
+            JsonNode node = restTemplate.getForObject(resourceURI, JsonNode.class);
+            responseEntity = tokenAuthenticationService.addAuthentication(node.get("user_id").asText());
+        } else {
+            responseEntity = ResponseEntity.ok().header(jwtHeader, rq.getHeader(jwtHeader)).build();
         }
-        return ResponseEntity.ok().build();
-    }
-
-    @RequestMapping("/auth/login")
-    public void login(UsernamePasswordAuthenticationToken principal, OAuth2Authentication auth2Authentication) {
-        principal.getCredentials();
+        return responseEntity;
 
     }
-
-
 }
