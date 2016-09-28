@@ -24,12 +24,18 @@ public class JWTTokenHelper {
     @Value("${jwt.secret}")
     private String secret;
 
+    @Value("${jwt.userId}")
+    private String userIdField;
+
+    @Value("${jwt.refreshCode}")
+    private String refreshTokenField;
+
 
     public String parseUserFromToken(String token) {
         String userId;
         try {
             final Claims claims = getClaimsFromToken(token);
-            userId = (String) claims.get("user_id");
+            userId = (String) claims.get(userIdField);
         } catch (Exception e) {
             userId = null;
         }
@@ -54,7 +60,7 @@ public class JWTTokenHelper {
         String refresh_code;
         try {
             final Claims claims = getClaimsFromToken(token);
-            refresh_code = (String) claims.get("refresh_code");
+            refresh_code = (String) claims.get(refreshTokenField);
         } catch (Exception e) {
             refresh_code = null;
         }
@@ -63,8 +69,8 @@ public class JWTTokenHelper {
 
     public String generateToken(String userId) {
         Map<String, Object> claims = new HashMap<>();
-        claims.put("user_id", userId);
-        claims.put("refresh_code", restTemplate.getAccessToken().getRefreshToken());
+        claims.put(userIdField, userId);
+        claims.put(refreshTokenField, restTemplate.getAccessToken().getRefreshToken());
         return generateToken(claims);
     }
 

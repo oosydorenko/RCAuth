@@ -3,7 +3,6 @@ package com.mycompany.app.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
 import org.springframework.security.oauth2.client.OAuth2ClientContext;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
@@ -11,7 +10,9 @@ import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResour
 import org.springframework.security.oauth2.client.token.grant.code.AuthorizationCodeResourceDetails;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Oleksandra Sydorenko
@@ -34,12 +35,15 @@ public class OAuth2ClientConfig {
         details.setAccessTokenUri(env.getProperty("amzn.accessTokenUri"));
         details.setUserAuthorizationUri(env.getProperty("amzn.userAuthorizationUri"));
         details.setTokenName(env.getProperty("amzn.authorization.code"));
-        details.setScope(Arrays.asList("profile","postal_code"));
-        details.setPreEstablishedRedirectUri(env.getProperty("amzn.preestablished.redirect.url"));
-        /*details.setUseCurrentUri(false);
-        details.setAuthenticationScheme(AuthenticationScheme.query);
-        details.setClientAuthenticationScheme(AuthenticationScheme.form);*/
+        details.setScope(parseScopes(env.getProperty("amzn.auth.scope")));
+        //details.setPreEstablishedRedirectUri(env.getProperty("amzn.preestablished.redirect.url"));
         return details;
+    }
+
+    private List<String> parseScopes(String commaSeparatedScopes) {
+        List<String> scopes = new ArrayList<>();
+        Collections.addAll(scopes, commaSeparatedScopes.split(","));
+        return scopes;
     }
 
     @Bean

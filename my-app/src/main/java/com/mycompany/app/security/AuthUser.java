@@ -46,6 +46,6 @@ public class AuthUser implements Authentication {
 
     @Override
     public String getName() {
-        return userId;
+        return "";
     }
 }

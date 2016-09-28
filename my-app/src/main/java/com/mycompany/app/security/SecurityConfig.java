@@ -13,7 +13,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
  * @date 27.09.16
  */
 @Configuration
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final TokenAuthenticationService tokenAuthenticationService;
@@ -26,9 +26,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .exceptionHandling().and()
+                .anonymous().and()
+                .servletApi().and()
+
+                .authorizeRequests().antMatchers("/").permitAll().and()
+                .authorizeRequests().antMatchers("/auth").permitAll().and()
+
+                .authorizeRequests().anyRequest().authenticated().and()
                 // Custom Token based authentication based on the header previously given to the client
                 .addFilterBefore(new AuthenticationTokenFilter(tokenAuthenticationService),
                         UsernamePasswordAuthenticationFilter.class);
+
     }
 
     @Bean
