@@ -2,7 +2,7 @@ amzn:
   client:
     id: amzn1.application-oa2-client.6d0f4ce2a6ab476b8247e6d293240a5f
     secret: 3de02217d36a56763d31b381593b58cf854d2588573c39ad00fc330815db36d2
-  auth.scope:  profile, postal_code
+  auth.scope:  profile,postal_code
   accessTokenUri: https://api.amazon.com/auth/o2/token
   userAuthorizationUri: https://www.amazon.com/ap/oa
   authorization.code: authorization_code

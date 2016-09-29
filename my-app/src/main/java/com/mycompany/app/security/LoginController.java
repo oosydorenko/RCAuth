@@ -43,7 +43,9 @@ class LoginController {
         if (!(auth.getDetails() instanceof String)) {
             SecurityContextHolder.getContext().setAuthentication(null);
             JsonNode node = restTemplate.getForObject(resourceURI, JsonNode.class);
-            responseEntity = tokenAuthenticationService.addAuthentication(node.get(userIdField).asText());
+            String userId = node.get(userIdField).asText();
+            responseEntity = tokenAuthenticationService.addAuthentication(userId);
+            SecurityContextHolder.getContext().setAuthentication(new AuthUser(userId));
         } else {
             responseEntity = ResponseEntity.ok().header(jwtHeader, rq.getHeader(jwtHeader)).build();
         }
